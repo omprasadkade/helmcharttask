@@ -1,0 +1,39 @@
+replicaCount: 1
+image:
+  repository: omprasadkade/s3filemanager
+  pullPolicy: IfNotPresent
+  tag: latest
+
+service:
+  type: ClusterIP
+  port: 5000
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  create: true
+  name: ""
+
+ingress:
+  enabled: true     
+  className: "nginx"                    
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: s3filemanager.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []                               
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
